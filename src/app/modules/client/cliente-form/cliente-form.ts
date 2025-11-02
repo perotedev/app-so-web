@@ -102,12 +102,13 @@ export class ClienteForm implements OnInit {
   }
 
   private patchForm(client: IClient): void {
+    console.log(client)
     this.formClient.patchValue({
       name: client.name,
       email: client.email??"",
       phone: client.phone??"",
       cnpj: client.cnpj??"",
-      address: this._formBuilder.group({
+      address: {
         street: client.address.street??"",
         number: client.address.number??"",
         complement: client.address.complement??"",
@@ -115,7 +116,7 @@ export class ClienteForm implements OnInit {
         city: client.address.city??"",
         state: client.address.state??"",
         cep: client.address.cep??""
-      })
+      }
     });
 
     this.formClient.disable();
