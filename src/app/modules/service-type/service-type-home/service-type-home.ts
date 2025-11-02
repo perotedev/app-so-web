@@ -17,6 +17,7 @@ import {PaginatorState} from 'primeng/paginator';
 import {IPaginationResponse} from '../../../shared/interfaces/IPaginationResponse';
 import {Dialog} from 'primeng/dialog';
 import {ServiceTypeForm} from '../service-type-form/service-type-form';
+import {sign} from 'chart.js/helpers';
 
 @Component({
   selector: 'app-service-type-home',
@@ -46,7 +47,7 @@ export class ServiceTypeHome implements OnInit{
   public total: number = 10;
   public page: number = 1;
   public size: number = 10;
-  public serviceTypes: IServiceType[] =  [];
+  public serviceTypes: WritableSignal<IServiceType[]> =  signal([]);
 
   constructor() {
     effect(() => {
@@ -60,7 +61,7 @@ export class ServiceTypeHome implements OnInit{
     this.isLoadingTypes.set(true);
     this._serviceTypeService.getServiceTypes(page, size, search)
       .then((res: IPaginationResponse<IServiceType>) => {
-        this.serviceTypes = res.items;
+        this.serviceTypes.set(res.items);
         this.page = res.page;
         this.size = res.size;
         this.total = res.total;
@@ -71,7 +72,7 @@ export class ServiceTypeHome implements OnInit{
     this._loading.present();
     this._serviceTypeService.deleteServiceType(typeId)
       .then((res: any) => {
-        this.serviceTypes = [...this.serviceTypes.filter(type => type.id !== typeId)];
+        this.serviceTypes.set([...this.serviceTypes().filter(type => type.id !== typeId)]);
         this._toast.showToastSuccess("Tipo de serviço excluído com sucesso!");
       }).finally(() => this._loading.dismiss());
   }
@@ -91,11 +92,11 @@ export class ServiceTypeHome implements OnInit{
   }
 
   public onSaveServiceType(type: IServiceType): void {
-    const existingTypeIndex: number = this.serviceTypes.findIndex((t: IServiceType) => t.id === type.id);
+    const existingTypeIndex: number = this.serviceTypes().findIndex((t: IServiceType) => t.id === type.id);
     if (existingTypeIndex >= 0) {
-      this.serviceTypes[existingTypeIndex] = type;
+      this.serviceTypes()[existingTypeIndex] = type;
     } else {
-      this.serviceTypes = [...this.serviceTypes, type];
+      this.serviceTypes.set([...this.serviceTypes(), type]);
     }
     this.toggleDialog();
   }

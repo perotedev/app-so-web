@@ -50,7 +50,7 @@ export class ClienteHome {
   public total: number = 10;
   public page: number = 1;
   public size: number = 10;
-  public clients: IClient[] = [];
+  public clients: WritableSignal<IClient[]> = signal([]);
 
   constructor() {
     effect(() => {
@@ -64,7 +64,7 @@ export class ClienteHome {
     this.isLoadingClients.set(true);
     this._clientService.getClients(page, size, search)
       .then((res: IPaginationResponse<IClient>) => {
-        this.clients = res.items;
+        this.clients.set(res.items);
         this.page = res.page;
         this.size = res.size;
         this.total = res.total;
@@ -75,7 +75,7 @@ export class ClienteHome {
     this._loading.present();
     this._clientService.deleteClient(clientId)
       .then((res: any) => {
-        this.clients = [...this.clients.filter(client => client.id !== clientId)];
+        this.clients.set([...this.clients().filter(client => client.id !== clientId)]);
         this._toast.showToastSuccess("Cliente excluído com sucesso!");
       }).finally(() => this._loading.dismiss());
   }
@@ -96,11 +96,11 @@ export class ClienteHome {
   }
 
   public onSaveClient(client: IClient): void {
-    const existingClientIndex: number = this.clients.findIndex((c: IClient) => c.id === client.id);
+    const existingClientIndex: number = this.clients().findIndex((c: IClient) => c.id === client.id);
     if (existingClientIndex >= 0) {
-      this.clients[existingClientIndex] = client;
+      this.clients()[existingClientIndex] = client;
     } else {
-      this.clients = [...this.clients, client];
+      this.clients.set([...this.clients(), client]);
     }
     this.toggleDialog();
   }

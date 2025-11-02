@@ -19,7 +19,7 @@
   </div>
 
   <app-content-list
-    [dataList]="serviceTypes"
+    [dataList]="serviceTypes()"
     [isMobile]="isMobile()"
     [isLoading]="isLoadingTypes()"
     [paginator]="true"
@@ -44,7 +44,7 @@
 
     <span cl-header>Descrição</span>
     <ng-template clTCell let-item>
-      <span cl-cell>{{item.description}}</span>
+      <span cl-cell>{{item.description??'Não informado'}}</span>
     </ng-template>
 
 
@@ -52,7 +52,7 @@
     <ng-template clTCell [isAction]="true" let-item>
       <span cl-cell [autoCol]="false" style="width: 72px;" class="text-right">
         <p-button (onClick)="toggleDialog(item)" size="small" styleClass="px-2" [rounded]="true" [text]="true">
-          <span class="pi pi-eye"></span>
+          <span class="pi pi-pencil"></span>
         </p-button>
       </span>
     </ng-template>

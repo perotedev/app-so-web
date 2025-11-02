@@ -36,6 +36,12 @@ export const authInterceptorFn: HttpInterceptorFn = (req, next) => {
           }
           break;
 
+        case HttpStatusCode.BadRequest || HttpStatusCode.UnprocessableEntity:
+          if (err.error.detail) {
+            toast.showToastError(err.error.detail);
+          }
+          break;
+
         default:
           // if (err.error.detail) {
           //   toast.showToastError(err.error.detail);

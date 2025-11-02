@@ -40,7 +40,7 @@ export class UserHome {
   public total: number = 10;
   public page: number = 1;
   public size: number = 10;
-  public users: IUser[] =  [];
+  public users: WritableSignal<IUser[]> =  signal([]);
 
   constructor() {
     effect(() => {
@@ -54,7 +54,7 @@ export class UserHome {
     this.isLoadingUsers.set(true);
     this._userService.getUsers(page, size, search)
       .then((res: IPaginationResponse<IUser>) => {
-        this.users = res.items;
+        this.users.set(res.items);
         this.page = res.page;
         this.size = res.size;
         this.total = res.total;
@@ -65,7 +65,7 @@ export class UserHome {
     this._loading.present();
     this._userService.deleteUser(userId)
       .then((res: any) => {
-        this.users = [...this.users.filter(user => user.id !== userId)];
+        this.users.set([...this.users().filter(user => user.id !== userId)]);
         this._toast.showToastSuccess("Usuário excluído com sucesso!");
       }).finally(() => this._loading.dismiss());
   }

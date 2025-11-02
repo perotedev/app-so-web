@@ -37,7 +37,7 @@ export class ServiceOrderHome {
   public total: number = 10;
   public page: number = 1;
   public size: number = 10;
-  public serviceOrders: IServiceOrder[] = [];
+  public serviceOrders: WritableSignal<IServiceOrder[]> = signal([]);
 
   constructor() {
     effect(() => {
@@ -51,7 +51,7 @@ export class ServiceOrderHome {
     this.isLoadingOrders.set(true);
     this._serviceOrderService.getServiceOrders(page, size, search)
       .then((res: IPaginationResponse<IServiceOrder>) => {
-        this.serviceOrders = res.items;
+        this.serviceOrders.set(res.items);
         this.page = res.page;
         this.size = res.size;
         this.total = res.total;
@@ -62,7 +62,7 @@ export class ServiceOrderHome {
     this._loading.present();
     this._serviceOrderService.deleteServiceOrder(orderId)
       .then((res: any) => {
-        this.serviceOrders = [...this.serviceOrders.filter(order => order.id !== orderId)];
+        this.serviceOrders.set([...this.serviceOrders().filter(order => order.id !== orderId)]);
         this._toast.showToastSuccess("Ordem de serviço excluída com sucesso!");
       }).finally(() => this._loading.dismiss());
   }
