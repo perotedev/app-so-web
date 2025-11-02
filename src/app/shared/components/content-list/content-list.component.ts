@@ -67,7 +67,7 @@ export class ContentList<T> implements AfterContentInit {
   public selectable: InputSignal<boolean> = input(false);
   public needPress: InputSignal<boolean> = input(false);
   public disabled: InputSignal<boolean> = input(false);
-  public canSelectFn: InputSignal<(item: any) => boolean> = input((item: any): boolean => true);
+  public canSelectFn: InputSignal<(item: T) => boolean> = input((item: T): boolean => true);
   public isLoading: InputSignal<boolean> = input(false);
   public dataList: InputSignal<T[]> = input.required();
   public first: InputSignal<number> = input(0);
@@ -77,14 +77,13 @@ export class ContentList<T> implements AfterContentInit {
   public gridClass: InputSignal<string> = input("flex");
   public onPageChange: OutputEmitterRef<PaginatorState> = output();
   public viewList: WritableSignal<IItemListContent<T>[]> = signal([]);
-  public actionCell: ClCellTemplateDirective<T> | undefined;
+  public actionCell?: ClCellTemplateDirective<T>;
   public selectAll: boolean = false;
   public mobilePressed: WritableSignal<boolean> = signal(false);
   public showMobileCheck: Signal<boolean> = computed(() => this.selectable() && (this.needPress()?this.mobilePressed():true));
   public selectionList: InputSignal<T[]> = input(new Array<T>());
-  public selectionListChange: OutputEmitterRef<any[]> = output();
+  public selectionListChange: OutputEmitterRef<(T | undefined)[]> = output();
   public selectionItemList: ISelectedItem<T>[] = [];
-  public intellisense: InputSignal<T | undefined> = input();
 
   public dataSignal: Signal<T[]> = computed(() => {
     const data: T[] = this.dataList();
@@ -119,7 +118,7 @@ export class ContentList<T> implements AfterContentInit {
     if (this.selectable()) this.initSelectionList();
   }
 
-  public canSelect(item: any): boolean {
+  public canSelect(item: T): boolean {
     return this.canSelectFn()(item);
   }
 
@@ -132,7 +131,7 @@ export class ContentList<T> implements AfterContentInit {
     }
 
     // add value in items from input
-    this.selectionList().forEach((item:any) => {
+    this.selectionList().forEach((item:T) => {
       const index: number = this.dataList().indexOf(item);
       if (index >= 0) {
         this.selectionItemList[index].checked = true;
@@ -188,7 +187,7 @@ export class ContentList<T> implements AfterContentInit {
     this.notifySelecionChange();
   }
 
-  public selectItem(index: number, item: any): void {
+  public selectItem(index: number, item: T): void {
     let auxItem: ISelectedItem<T> = this.selectionItemList[index];
     if (auxItem.checked) auxItem.item = item;
     else auxItem.item = undefined;
