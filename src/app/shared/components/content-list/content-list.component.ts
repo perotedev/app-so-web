@@ -73,7 +73,7 @@ export class ContentList implements AfterContentInit {
   public rowsPerPageOptions: InputSignal<number[]> = input([10, 20, 30]);
   public gridClass: InputSignal<string> = input("flex");
   public onPageChange: OutputEmitterRef<PaginatorState> = output();
-  public viewList: IItemListContent[] = [];
+  public viewList: WritableSignal<IItemListContent[]> = signal([]);
   public actionCell: ClCellTemplateDirective | undefined;
   public selectAll: boolean = false;
   public mobilePressed: WritableSignal<boolean> = signal(false);
@@ -88,15 +88,17 @@ export class ContentList implements AfterContentInit {
 
 
   public ngAfterContentInit(): void {
+    const auxList: IItemListContent[] = [];
     this.cellsTemplates.toArray().forEach((cellT: ClCellTemplateDirective, index: number) => {
       const header: ClHeaderDirective | undefined = this.headersElements.get(index);
-      if (header) this.viewList.push({
+      if (header) auxList.push({
           cellTemplate: cellT,
           headerRef: header
       });
 
       if (cellT.isAction()) this.actionCell = cellT;
     });
+    this.viewList.set(auxList)
 
     if (this.selectable()) this.initSelectionList();
   }

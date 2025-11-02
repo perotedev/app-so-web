@@ -22,15 +22,15 @@
         }
       </div>
     }
-    @for(item of dataList(); track item) {
+    @for(mItem of dataList(); track mItem) {
       <div class="cl-card mb-2" [class.hasactions]="actionCell !== undefined" [class.loadingblur]="isLoading()" (touchstart)="onTouchStart($event)" (touchend)="onTouchEnd($event)">
         @if (showMobileCheck()) {
           <span style="width: 30px;">
-            <p-check-box [(ngModel)]="selectionItemList[$index].checked" (onChange)="selectItem($index, item)" [binary]="true" />
+            <p-check-box [(ngModel)]="selectionItemList[$index].checked" (onChange)="selectItem($index, mItem)" [binary]="true" />
           </span>
         }
         <div class="flex-1">
-          @for(mCell of viewList; track mCell;) {
+          @for(mCell of viewList(); track mCell;) {
             @if (mCell.cellTemplate.mobileDisplay()) {
               <div class="cl-card-content {{needPress()?'not-select':''}}">
                 <div class="cl-card-title">
@@ -39,7 +39,7 @@
                 </div>
 
                 <div class="cl-card-values">
-                  <ng-container [ngTemplateOutlet]="mCell.cellTemplate.template" [ngTemplateOutletContext]="{ $implicit: item }" />
+                  <ng-container [ngTemplateOutlet]="mCell.cellTemplate.template" [ngTemplateOutletContext]="{ $implicit: mItem }" />
                 </div>
               </div>
             }
@@ -48,7 +48,7 @@
 
         @if (actionCell) {
           <div class="cl-mobile-actions">
-            <ng-container [ngTemplateOutlet]="actionCell.template" [ngTemplateOutletContext]="{ $implicit: item }" />
+            <ng-container [ngTemplateOutlet]="actionCell.template" [ngTemplateOutletContext]="{ $implicit: mItem }" />
           </div>
         }
       </div>
@@ -64,7 +64,7 @@
           <p-check-box [(ngModel)]="selectAll" size="small" (onChange)="toggleSelectAll()" [binary]="true" />
         </span>
       }
-      @for(hCell of viewList; track hCell;) {
+      @for(hCell of viewList(); track hCell;) {
         @if (hCell.headerRef.hIcon()) {
           <span [class]="hCell.headerRef.classList" [style]="hCell.headerRef.style()">
             <span class="pi {{hCell.headerRef.hIcon()}}"></span>
@@ -79,16 +79,16 @@
       <ng-container [ngTemplateOutlet]="loadingTemplate" />
     } @else {
       <div [@listAnimation]>
-        @for(item of dataSignal(); track item;) {
+        @for(dItem of dataSignal(); track dItem;) {
           <div class="cl-row {{gridClass()}} {{disabled() ? 'disabled' : ''}}" [class.loadingblur]="isLoading()">
             @if (selectable()) {
               <span style="width: 26px;">
-            <p-check-box [(ngModel)]="selectionItemList[$index].checked" (onChange)="selectItem($index, item)" size="small" [binary]="true" [disabled]="!canSelect(item)" />
+            <p-check-box [(ngModel)]="selectionItemList[$index].checked" (onChange)="selectItem($index, dItem)" size="small" [binary]="true" [disabled]="!canSelect(dItem)" />
           </span>
             }
 
-            @for (cell of viewList; track cell) {
-              <ng-container [ngTemplateOutlet]="cell.cellTemplate.template" [ngTemplateOutletContext]="{ $implicit: item }" />
+            @for (cell of viewList(); track cell) {
+              <ng-container [ngTemplateOutlet]="cell.cellTemplate.template" [ngTemplateOutletContext]="{ $implicit: dItem }" />
             }
           </div>
         } @empty {
