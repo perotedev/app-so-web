@@ -1,4 +1,4 @@
-import {Component, inject, input, InputSignal, output, OutputEmitterRef} from '@angular/core';
+import {Component, inject, input, InputSignal, OnInit, output, OutputEmitterRef} from '@angular/core';
 import {IServiceType} from '../../../shared/interfaces/IServiceType';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {ToastService} from '../../../shared/services/toast';
@@ -26,7 +26,7 @@ import {PrimeIcons} from 'primeng/api';
   templateUrl: './service-type-form.html',
   styleUrl: './service-type-form.scss'
 })
-export class ServiceTypeForm {
+export class ServiceTypeForm implements OnInit {
   public editServiceType: InputSignal<IServiceType | undefined> = input<IServiceType | undefined>(undefined);
   public onSaveServiceType: OutputEmitterRef<IServiceType> = output();
 
@@ -67,6 +67,19 @@ export class ServiceTypeForm {
       this._toast.showToastError(`Erro ao ${this.editServiceType() ? 'atualizar' : 'cadastrar'} tipo de serviço!`);
     }).finally(() => this._loading.dismiss());
   }
+
+  private patchForm(seviceType: IServiceType):void {
+    this.formServiceType.patchValue({
+      name: seviceType.name??"",
+      description: seviceType.description??"",
+      icon: seviceType.icon??""
+    });
+  }
+
+  public ngOnInit(): void {
+    if (this.editServiceType()) this.patchForm(this.editServiceType()!);
+  }
+
 
   public onSubmit(e: Event): void {
     e.preventDefault();

@@ -1,4 +1,4 @@
-import {Component, effect, inject, OnInit, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, signal, WritableSignal} from '@angular/core';
 import {Button} from "primeng/button";
 import {
   ClCellDirective,
@@ -17,7 +17,6 @@ import {PaginatorState} from 'primeng/paginator';
 import {IPaginationResponse} from '../../../shared/interfaces/IPaginationResponse';
 import {Dialog} from 'primeng/dialog';
 import {ServiceTypeForm} from '../service-type-form/service-type-form';
-import {sign} from 'chart.js/helpers';
 
 @Component({
   selector: 'app-service-type-home',
@@ -35,12 +34,12 @@ import {sign} from 'chart.js/helpers';
   templateUrl: './service-type-home.html',
   styleUrl: './service-type-home.scss'
 })
-export class ServiceTypeHome implements OnInit{
+export class ServiceTypeHome {
   private readonly _serviceTypeService: ServiceTypeService = inject(ServiceTypeService);
   private readonly _loading: Loading = inject(Loading);
   private readonly _toast: ToastService = inject(ToastService);
   public readonly isMobile = inject(IS_MOBILE);
-  public search: WritableSignal<string> = signal('');
+  public search: WritableSignal<string> = signal("");
   public isLoadingTypes: WritableSignal<boolean> = signal(false);
   public dialogVisible: boolean = false;
   public selectedType?: IServiceType;
@@ -53,11 +52,11 @@ export class ServiceTypeHome implements OnInit{
     effect(() => {
       this.page = 1;
       this.size = 10;
-      this.getSeriveTypes(this.page, this.size, this.search());
+      this.getServiceTypes(this.page, this.size, this.search());
     });
   }
 
-  private getSeriveTypes(page: number, size: number, search = ""): void {
+  private getServiceTypes(page: number, size: number, search = ""): void {
     this.isLoadingTypes.set(true);
     this._serviceTypeService.getServiceTypes(page, size, search)
       .then((res: IPaginationResponse<IServiceType>) => {
@@ -81,14 +80,11 @@ export class ServiceTypeHome implements OnInit{
     this.deleteServiceType(userId);
   }
 
-  public ngOnInit(): void {
-    this.getSeriveTypes(this.page, this.size);
-  }
 
   public onPageChange(event: PaginatorState): void {
     this.page = event.page!;
     this.size = event.rows!;
-    this.getSeriveTypes(this.page, this.size);
+    this.getServiceTypes(this.page, this.size);
   }
 
   public onSaveServiceType(type: IServiceType): void {
