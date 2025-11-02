@@ -15,21 +15,21 @@ export class UserConfig {
 
   public updateUpdateTheme(theme: ThemeType, version: number = 1): void {
     const auxUser = {...this._currentUser.currentUser()};
-    auxUser.userConfig.theme = theme;
+    auxUser.user_config.theme = theme;
     this._currentUser.setUser(auxUser);
     lastValueFrom(this._http.put<IUserConfig>(
-      `${environment.apiUrl}/api/v${version}/users/user-config/${auxUser.userConfig.id}`,
-      {theme: theme, expanded: auxUser.userConfig.expanded, user_id: auxUser.id}
+      `${environment.apiUrl}/api/v${version}/users/user-config/${auxUser.user_config.id}`,
+      {theme: theme, expanded: auxUser.user_config.expanded, user_id: auxUser.id}
     )).then(res => {});
   }
 
   public updateUpdateMenu(expanded: boolean, version: number = 1): void {
     const auxUser = {...this._currentUser.currentUser()};
-    auxUser.userConfig.expanded = expanded;
+    auxUser.user_config.expanded = expanded;
     this._currentUser.setUser(auxUser);
     lastValueFrom(this._http.put<IUserConfig>(
-      `${environment.apiUrl}/api/v${version}/users/user-config/${auxUser.userConfig.id}`,
-      {expanded: expanded, theme: auxUser.userConfig.theme, user_id: auxUser.id}
+      `${environment.apiUrl}/api/v${version}/users/user-config/${auxUser.user_config.id}`,
+      {expanded: expanded, theme: auxUser.user_config.theme, user_id: auxUser.id}
     )).then(res => {});
   }
 }

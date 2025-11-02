@@ -10,5 +10,5 @@ export interface IUser extends IMetaData{
   person_id: number;
   active: boolean;
   role: RoleEnum;
-  userConfig: IUserConfig;
+  user_config: IUserConfig;
 }

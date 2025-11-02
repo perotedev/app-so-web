@@ -1,6 +1,6 @@
 <div>
   <form [formGroup]="formUser" (submit)="onSubmit($event)">
-    <div class="mt-2">
+    <div formGroupName="person" class="mt-2">
       <p-float-label variant="on">
         <input
           id="userName"
@@ -28,7 +28,7 @@
       </p-float-label>
     </div>
 
-    <div class="mt-3">
+    <div formGroupName="person" class="mt-3">
       <p-float-label variant="on">
         <p-date-picker
           id="userBirth"
@@ -59,7 +59,7 @@
       </p-float-label>
     </div>
 
-    <div class="mt-3">
+    <div formGroupName="person" class="mt-3">
       <p-float-label variant="on">
         <p-input-mask
           inputId="userCpf"
@@ -73,7 +73,7 @@
       </p-float-label>
     </div>
 
-    <div class="mt-3">
+    <div formGroupName="person" class="mt-3">
       <p-float-label variant="on">
         <p-input-mask
           inputId="userPhone"

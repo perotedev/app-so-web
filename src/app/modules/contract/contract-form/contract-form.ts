@@ -48,7 +48,7 @@ export class ContractForm implements OnInit {
       date_start: ['', [Validators.required]],
       date_end: ['', [Validators.required]],
       value: ['', [Validators.required]],
-      description: ['']
+      description: [null]
     });
   }
 
@@ -64,7 +64,7 @@ export class ContractForm implements OnInit {
         : this._contractService.createContract(value);
 
     req.then((res: IContract) => {
-      this._toast.showToastSuccess("Contrato cadastrado com sucesso!");
+      this._toast.showToastSuccess(`Contrato ${this.editContract() ? 'atualizado' : 'cadastrado'} com sucesso!`);
       this.onSaveContract.emit(res);
     }).catch((err: any) => {
       this._toast.showToastError(`Erro ao ${this.editContract() ? 'atualizar' : 'cadastrar'} contrato!`);
@@ -73,14 +73,19 @@ export class ContractForm implements OnInit {
 
   public ngOnInit(): void {
     if (this.editContract()) {
+      const start = this.editContract()!.date_start + "T00:00:00";
+      const end = this.editContract()!.date_end + "T00:00:00";
+
       this.formContract.patchValue({
         client_id: this.editContract()!.client_id,
-        date_start: new Date(this.editContract()!.date_start),
-        date_end: new Date(this.editContract()!.date_end),
+        date_start: new Date(start),
+        date_end: new Date(end),
         value: this.editContract()!.value,
         description: this.editContract()!.description
       });
     }
+
+    console.log(this.formContract.value);
   }
 
   public onSubmit(e: Event): void {

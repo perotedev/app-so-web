@@ -93,7 +93,7 @@ export class MenuDesktop implements OnInit{
 
   public ngOnInit(): void {
     this.setCurrentRoute();
-    this.expanded.set(this._currentUser().userConfig.expanded)
+    this.expanded.set(this._currentUser().user_config.expanded)
   }
 
   public toggleMenuClass(): void {

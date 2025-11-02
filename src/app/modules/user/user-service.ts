@@ -17,19 +17,19 @@ export class UserService {
     ));
   }
 
-  public getUser(id: number): Promise<IUser> {
-    return lastValueFrom(this._http.get<IUser>(`${environment.apiUrl}/users/${id}`));
+  public getUser(id: number, version: number = 1): Promise<IUser> {
+    return lastValueFrom(this._http.get<IUser>(`${environment.apiUrl}/api/v${version}/users/${id}`));
   }
 
-  public createUser(user: IUser): Promise<IUser> {
-    return lastValueFrom(this._http.post<IUser>(`${environment.apiUrl}/users`, user));
+  public createUser(user: IUser, version: number = 1): Promise<IUser> {
+    return lastValueFrom(this._http.post<IUser>(`${environment.apiUrl}/api/v${version}/users/without_pass`, user));
   }
 
-  public updateUser(id: number, user: IUser): Promise<IUser> {
-    return lastValueFrom(this._http.put<IUser>(`${environment.apiUrl}/users/${id}`, user));
+  public updateUser(id: number, user: IUser, version: number = 1): Promise<IUser> {
+    return lastValueFrom(this._http.put<IUser>(`${environment.apiUrl}/api/v${version}/users/${id}`, user));
   }
 
-  public deleteUser(id: number): Promise<any> {
-    return lastValueFrom(this._http.delete(`${environment.apiUrl}/users/${id}`));
+  public deleteUser(id: number, version: number = 1): Promise<any> {
+    return lastValueFrom(this._http.delete(`${environment.apiUrl}/api/v${version}/users/${id}`));
   }
 }

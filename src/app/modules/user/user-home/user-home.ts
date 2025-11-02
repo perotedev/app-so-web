@@ -84,4 +84,14 @@ export class UserHome {
     this.selectedUser = user;
     this.dialogVisible = !this.dialogVisible;
   }
+
+  public onSaveUser(user: IUser): void {
+    const existingUserIndex: number = this.users().findIndex((u: IUser) => u.id === user.id);
+    if (existingUserIndex >= 0) {
+      this.users()[existingUserIndex] = user;
+    } else {
+      this.users.set([...this.users(), user]);
+    }
+    this.toggleDialog();
+  }
 }

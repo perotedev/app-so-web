@@ -79,7 +79,7 @@
   @if(dialogVisible) {
     <app-user-form
       [editUser]="selectedUser"
-      (onSaveUser)="toggleDialog()"
+      (onSaveUser)="onSaveUser($event)"
     />
   }
 </p-dialog>

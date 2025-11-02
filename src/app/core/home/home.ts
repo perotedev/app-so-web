@@ -24,6 +24,6 @@ export class Home implements OnInit {
 
   public ngOnInit(): void {
     this._currentUser.initUserInHome();
-    this._appTheme.setTheme(this._currentUser.currentUser().userConfig.theme);
+    this._appTheme.setTheme(this._currentUser.currentUser().user_config.theme);
   }
 }

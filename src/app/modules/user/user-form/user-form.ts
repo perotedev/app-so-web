@@ -41,18 +41,25 @@ export class UserForm implements OnInit {
 
   constructor() {
     this.formUser = this._formBuilder.group({
-      name: ['', [Validators.required, Validators.minLength(3)]],
       email: ['', [Validators.required, Validators.email]],
-      birth: ['', Validators.required],
-      cpf: ['', [cpfValidator()]],
-      phone: ['', [phoneValidator()]],
       active: [false, [Validators.required]],
-      role: ['', [Validators.required]]
+      role: ['', [Validators.required]],
+      person_id: [null],
+      person: this._formBuilder.group({
+        birth: ['', [Validators.required]],
+        cpf: ['', [cpfValidator()]],
+        phone: ['', [phoneValidator()]],
+        name: ['', [Validators.required, Validators.minLength(3)]]
+      })
     });
   }
 
   private saveUser(): void {
     this._loading.present();
+
+    const userData = this.formUser.value;
+    userData.person.birth = userData.person.birth.toISOString().split('T')[0];
+    if (this.editUser()) userData.person.id = this.editUser()!.person.id;
 
     const req: Promise<IUser> =
       this.editUser()
@@ -68,7 +75,20 @@ export class UserForm implements OnInit {
   }
 
   public ngOnInit(): void {
-    if (!this.editUser()) {
+    if (this.editUser()) {
+      this.formUser.patchValue({
+        email: this.editUser()!.email??"",
+        active: this.editUser()!.active,
+        role: this.editUser()!.role,
+        person_id: this.editUser()!.person_id,
+        person: {
+          name: this.editUser()!.person.name??"",
+          birth: new Date(this.editUser()!.person.birth + "T00:00:00")??"",
+          cpf: this.editUser()!.person.cpf??"",
+          phone: this.editUser()!.person.phone??""
+        }
+      })
+    } else {
       this.formUser.controls['active'].setValue(true);
     }
   }

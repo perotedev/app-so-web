@@ -6,5 +6,5 @@ export function markDirtyFields(formGroup: FormGroup, toast?: ToastService): voi
     formGroup.controls[controlName].markAsDirty();
   });
 
-  if (toast) toast.showToastInfo("Preencha os campos obrigatórios!");
+  if (toast) toast.showToastInfo("Preencha os campos obrigatórios corretamente!");
 }

@@ -63,7 +63,7 @@
     <ng-template clTCell [isAction]="true" let-item>
       <span cl-cell [autoCol]="false" style="width: 72px;" class="text-right">
         <p-button (onClick)="toggleDialog(item)" size="small" styleClass="px-2" [rounded]="true" [text]="true">
-          <span class="pi pi-eye"></span>
+          <span class="pi pi-pencil"></span>
         </p-button>
       </span>
     </ng-template>
@@ -72,7 +72,7 @@
 
 
 <p-dialog
-  header="{{selectedContract()?'Editar':'Adicionar'}} Contrato"
+  header="{{selectedContract()?'Editar':'Adicionar'}} Contrato {{selectedContract()?.number??''}}"
   [(visible)]="dialogVisible"
   [modal]="true"
   [style]="{width: isMobile()?'90%':'380px'}"
