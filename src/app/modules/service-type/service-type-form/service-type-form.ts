@@ -12,6 +12,11 @@ import {Select} from 'primeng/select';
 import {Textarea} from 'primeng/textarea';
 import {PrimeIcons} from 'primeng/api';
 
+export interface IIconOption {
+  label: string;
+  value: string;
+}
+
 @Component({
   selector: 'app-service-type-form',
   imports: [
@@ -35,12 +40,12 @@ export class ServiceTypeForm implements OnInit {
   private readonly _serviceTypeService: ServiceTypeService = inject(ServiceTypeService);
   private readonly _loading: Loading = inject(Loading);
   public formServiceType: FormGroup;
-  public iconOptions: { label: string; value: string }[] = [];
+  public iconOptions: IIconOption[] = [];
 
   constructor() {
     this.formServiceType = this._formBuilder.group({
       name: ['', [Validators.required, Validators.minLength(3)]],
-      description: [''],
+      description: [null],
       icon: [null, [Validators.required]]
     });
 

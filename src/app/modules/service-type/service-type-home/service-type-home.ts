@@ -76,7 +76,7 @@ export class ServiceTypeHome {
       }).finally(() => this._loading.dismiss());
   }
 
-  public removeServiceTupe(userId: number): void {
+  public removeServiceType(userId: number): void {
     this.deleteServiceType(userId);
   }
 

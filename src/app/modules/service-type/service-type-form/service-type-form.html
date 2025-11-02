@@ -30,7 +30,7 @@
         >
           <ng-template #selectedItem let-selectedOption>
             <div class="flex align-items-center">
-              <span class="pi {{selectedOption.value}}"></span>
+              <span class="{{selectedOption.value}}"></span>
               <div class="text-overflow-ellipsis">
                 <span class="ml-3">{{selectedOption.label}}</span>
               </div>
@@ -39,7 +39,7 @@
 
           <ng-template let-optionItem #item>
             <div class="flex align-items-center pl-1">
-              <span class="pi {{optionItem.value}}"></span>
+              <span class="{{optionItem.value}}"></span>
             </div>
           </ng-template>
 
