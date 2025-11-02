@@ -3,8 +3,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ContentList } from './content-list.component';
 
 describe('ContentListComponent', () => {
-  let component: ContentList;
-  let fixture: ComponentFixture<ContentList>;
+  let component: ContentList<any>;
+  let fixture: ComponentFixture<ContentList<any>>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

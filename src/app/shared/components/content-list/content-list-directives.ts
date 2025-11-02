@@ -53,11 +53,18 @@ export class ClCellDirective implements OnInit {
   standalone: true,
   selector: '[clTCell]'
 })
-export class ClCellTemplateDirective {
+export class ClCellTemplateDirective<T> {
   public template: TemplateRef<any> = inject(TemplateRef);
   public mobileHiden: InputSignal<boolean> = input(false);
   public isAction: InputSignal<boolean> = input(false);
   public mobileDisplay: Signal<boolean> = computed(() => !this.isAction() && !this.mobileHiden());
+
+  public iType: InputSignal<T | undefined> = input<T | undefined>();
+
+  static ngTemplateGuard_clTCell: 'binding';
+  static ngTemplateContextGuard<T>(dir: ClCellTemplateDirective<T>, ctx: any): ctx is { $implicit: T } {
+    return true;
+  }
 }
 
 @Directive({
