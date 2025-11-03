@@ -1,10 +1,10 @@
-import {Component, effect, inject, input, InputSignal, model, ModelSignal, signal, WritableSignal} from '@angular/core';
-import {FileTransferService, ROUTE_FILE_SEND} from '../../../shared/services/file-transfer';
+import {Component, inject, input, InputSignal, model, ModelSignal, signal, WritableSignal} from '@angular/core';
+import {FileTransferService} from '../../../shared/services/file-transfer';
 import {IServiceOrderItemDocument} from '../../../shared/interfaces/IServiceOrderItemDocument';
 import {takeUntil} from 'rxjs';
 import {ToastService} from '../../../shared/services/toast';
-import {ServiceOrderService} from '../service-order-service';
 import {ServiceOrderItemDocPosition} from '../../../shared/enums/ServiceOrderItemDocPosition';
+import {environment} from '../../../../environments/environment';
 
 @Component({
   selector: 'app-service-order-images',
@@ -25,6 +25,7 @@ export class ServiceOrderImages {
   public imgsUrls: WritableSignal<string[]> = signal([]);
   public showGalery: boolean = false;
   public indexGalery: number = 0;
+  public readonly apiUrl: string = environment.apiUrl;
 
   constructor() {
     // effect(() => {

@@ -37,6 +37,10 @@
   background: var(--p-message-secondary-background);
 }
 
+.saved-image {
+  border-radius: 12px;
+}
+
 ::ng-deep {
   .galery-border {
     button {
