@@ -1,27 +1,29 @@
 <div class="flex flex-wrap w-full">
-  <input #inputFileImage type="file" class="input-file-imgs" [id]="inputFileId()" title=" " [max]="5" [multiple]="true" accept="image/*" (change)="onChangeInputFile($event)" />
-  <div class="img-size border-round-xl shadow-1 add-image flex align-items-center justify-content-center mr-3 mb-3">
-    <div (click)="inputFileImage.click()" class="inner-add-image flex flex-column align-items-center justify-content-center cursor-pointer">
-      <div class="text-center m-0">
-        <span class="pi pi-images text-xl mb-2 opacity-80"></span>
-      </div>
+  <input #inputFileImage type="file" class="input-file-imgs" [id]="inputFileId()" title=" " [max]="3" [multiple]="true" accept="image/*" (change)="onChangeInputFile($event)" />
+  @if (photoList().length < 3) {
+    <div class="img-size border-round-xl shadow-1 add-image flex align-items-center justify-content-center mr-3 mb-3">
+      <div (click)="inputFileImage.click()" class="inner-add-image flex flex-column align-items-center justify-content-center cursor-pointer">
+        <div class="text-center m-0">
+          <span class="pi pi-images text-xl mb-2 opacity-80"></span>
+        </div>
 
-      <div class="m-0 opacity-80">
-        <span>Adicionar</span>
+        <div class="m-0 opacity-80">
+          <span>Adicionar</span>
+        </div>
       </div>
     </div>
-  </div>
+  }
 
   @for(item of photoList(); track $index) {
     <img
       (click)="toggleGallery($index)"
       class="img-size fadein mr-3 mb-3 cursor-pointer"
-      [src]="item.document.path"
-      [alt]="item.document.name"
+      [src]="item.document.file_path"
+      [alt]="item.document.filename"
     />
   }
 
-  @if (photoList().length < 6) {
+  @if (photoList().length < 3) {
     @for (item of getFakeList(); track item) {
       <div class=" img-size border-round-xl shadow-1 add-image flex align-items-center justify-content-center mr-3 mb-3">
         <div (click)="inputFileImage.click()" class="inner-add-image flex flex-column align-items-center justify-content-center cursor-pointer">

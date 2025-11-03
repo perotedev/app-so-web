@@ -8,7 +8,6 @@ import {environment} from '../../../environments/environment';
 export const FILE_TRANSFER = new InjectionToken('FILE_TRANSFER');
 export const ROUTE_FILES_ZIP: string = "api/v1/doc/zip";
 export const ROUTE_FILE_SEND: string = "api/v1/doc/upload";
-
 @Injectable({
   providedIn: 'root'
 })

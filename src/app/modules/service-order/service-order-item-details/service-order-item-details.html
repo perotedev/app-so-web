@@ -49,6 +49,8 @@
       <div class="mt-3">
         <app-service-order-images
           [soItemId]="soItem().id!"
+          [position]="serviceOrderItemDocPosition.BEFORE"
+          [photoList]="beforeImages()"
           inputFileId="inputFileId_1"
         />
       </div>
@@ -60,6 +62,8 @@
       <div class="mt-3">
         <app-service-order-images
           [soItemId]="soItem().id!"
+          [position]="serviceOrderItemDocPosition.AFTER"
+          [photoList]="afterImages()"
           inputFileId="inputFileId_2"
         />
       </div>
@@ -90,12 +94,14 @@
       />
     }
 
-    <p-button
-      icon="pi pi-pencil"
-      label="Editar"
-      (onClick)="onEditItem.emit()"
-      severity="warn"
-    />
+    @if (soItem().status !== 'FINISHED' && soItem().status !== 'CANCELED') {
+      <p-button
+        icon="pi pi-pencil"
+        label="Editar"
+        (onClick)="onEditItem.emit()"
+        severity="warn"
+      />
+    }
 
 <!--    <p-button-->
 <!--      icon="pi pi-trash"-->

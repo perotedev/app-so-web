@@ -1,8 +1,10 @@
-import {Component, effect, inject, input, InputSignal, model, ModelSignal} from '@angular/core';
+import {Component, effect, inject, input, InputSignal, model, ModelSignal, signal, WritableSignal} from '@angular/core';
 import {FileTransferService, ROUTE_FILE_SEND} from '../../../shared/services/file-transfer';
 import {IServiceOrderItemDocument} from '../../../shared/interfaces/IServiceOrderItemDocument';
 import {takeUntil} from 'rxjs';
 import {ToastService} from '../../../shared/services/toast';
+import {ServiceOrderService} from '../service-order-service';
+import {ServiceOrderItemDocPosition} from '../../../shared/enums/ServiceOrderItemDocPosition';
 
 @Component({
   selector: 'app-service-order-images',
@@ -14,18 +16,19 @@ export class ServiceOrderImages {
   public soItemId: InputSignal<number> = input.required();
   public photoList: ModelSignal<IServiceOrderItemDocument[]> = model<IServiceOrderItemDocument[]>([]);
   public inputFileId: InputSignal<string> = input('inputFileImages');
+  public position: InputSignal<ServiceOrderItemDocPosition> = input<ServiceOrderItemDocPosition>(ServiceOrderItemDocPosition.BEFORE);
 
   private readonly _fileTransfer: FileTransferService = inject(FileTransferService);
   private readonly _toast: ToastService = inject(ToastService);
   private _filesToSend: File[] = [];
-  public imgsUrls: string[] = [];
+  public imgsUrls: WritableSignal<string[]> = signal([]);
   public showGalery: boolean = false;
   public indexGalery: number = 0;
 
   constructor() {
-    effect(() => {
-      this.setImageUrlList(this.photoList());
-    });
+    // effect(() => {
+    //   this.setImageUrlList(this.photoList());
+    // });
   }
 
   private processResponse(req: Promise<IServiceOrderItemDocument>): void {
@@ -37,10 +40,11 @@ export class ServiceOrderImages {
   }
 
   private saveImage(): void {
+    const endpoint: string = `api/v1/service-orders/item/${this.soItemId()}/document`;
     const auxFiles = [...this._filesToSend];
     this._filesToSend = [];
     for (let file of auxFiles) {
-      const transfer = this._fileTransfer.uploadFile(this.getFormData(file), ROUTE_FILE_SEND);
+      const transfer = this._fileTransfer.uploadFile(this.getFormData(file), endpoint);
       this.processResponse(transfer.request);
 
       transfer.retryEvent.pipe(takeUntil(transfer.destroy$)).subscribe({
@@ -56,16 +60,17 @@ export class ServiceOrderImages {
   private getFormData(file: File): FormData {
     const formData: FormData = new FormData();
     formData.append("sevice_order_item_id", `${this.soItemId()}`);
-    formData.append("name", `servico_foto_${this.soItemId()}`);
+    formData.append("position", `${this.position()}`);
     formData.append("file", file);
     return formData;
   }
 
   private setImageUrlList(photoList: IServiceOrderItemDocument[]): void {
-    this.imgsUrls = [];
-    this.photoList().forEach((image: IServiceOrderItemDocument) => {
-      this.imgsUrls.push(image.document.path);
+    const auxList: string[] = []
+    photoList.forEach((image: IServiceOrderItemDocument) => {
+      auxList.push(image.document.file_path);
     });
+    this.imgsUrls.set(auxList);
   }
 
   public toggleGallery(index: number): void {

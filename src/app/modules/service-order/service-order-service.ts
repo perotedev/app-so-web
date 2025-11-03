@@ -10,6 +10,7 @@ import {IServiceType} from '../../shared/interfaces/IServiceType';
 import {IClient} from '../../shared/interfaces/IClient';
 import {IContract} from '../../shared/interfaces/IContract';
 import {ServiceOrderStatusEnum} from '../../shared/enums/ServiceOrderStatusEnum';
+import {IServiceOrderItemDocument} from '../../shared/interfaces/IServiceOrderItemDocument';
 
 @Injectable({
   providedIn: 'root'
@@ -84,6 +85,13 @@ export class ServiceOrderService {
     return lastValueFrom(this._http.put<IServiceOrderItem>(
       `${environment.apiUrl}/api/v${version}/service-orders/item/${soItemId}/status`,
       data
+    ));
+  }
+
+  public createSoItemDoc(soItemId:number, formData: FormData, version: number = 1): Promise<IServiceOrderItemDocument> {
+    return lastValueFrom(this._http.post<IServiceOrderItemDocument>(
+      `${environment.apiUrl}/api/v${version}/service-orders/item/${soItemId}/document`,
+      formData
     ));
   }
 }
