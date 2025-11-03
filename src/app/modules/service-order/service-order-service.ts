@@ -64,6 +64,12 @@ export class ServiceOrderService {
     ));
   }
 
+  public getContractsByClient(client_id: number, version: number = 1): Promise<IContract[]> {
+    return lastValueFrom(this._http.get<IContract[]>(
+      `${environment.apiUrl}/api/v${version}/contracts/by_client/${client_id}`
+    ));
+  }
+
   public createSoItem(soItem: any, version: number = 1): Promise<IServiceOrderItem> {
     return lastValueFrom(this._http.post<IServiceOrderItem>(`${environment.apiUrl}/api/v${version}/service-orders/item`, soItem));
   }

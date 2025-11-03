@@ -1,4 +1,4 @@
-import {Component, inject, input, InputSignal, output, OutputEmitterRef} from '@angular/core';
+import {Component, inject, input, InputSignal, output, OutputEmitterRef, signal, WritableSignal} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FloatLabel} from 'primeng/floatlabel';
 import {Select} from 'primeng/select';
@@ -15,6 +15,7 @@ import {IContract} from '../../../shared/interfaces/IContract';
 import {Loading} from '../../../shared/services/loading';
 import {ServiceOrderService} from '../service-order-service';
 import {ServiceOrderStatusEnum} from '../../../shared/enums/ServiceOrderStatusEnum';
+import {IPaginationResponse} from '../../../shared/interfaces/IPaginationResponse';
 
 @Component({
   selector: 'app-service-order-form',
@@ -35,14 +36,15 @@ export class ServiceOrderForm {
   public editSO: InputSignal<IServiceOrder | undefined> = input<IServiceOrder | undefined>(undefined);
   public isDetails: InputSignal<boolean> = input(false);
   public clients: InputSignal<IClient[]> = input<IClient[]>([]);
-  public contracts: InputSignal<IContract[]> = input<IContract[]>([]);
   public onSave: OutputEmitterRef<IServiceOrder> = output();
-
   private readonly _toast: ToastService = inject(ToastService);
+
   private readonly _formBuilder: FormBuilder = inject(FormBuilder);
   private readonly _serviceOrderService: ServiceOrderService = inject(ServiceOrderService);
   private readonly _loading: Loading = inject(Loading);
   public readonly isMobile = inject(IS_MOBILE);
+  public readonly contracts: WritableSignal<IContract[]> = signal([]);
+  public loadingContracts: boolean = false;
   public formSO: FormGroup;
 
   constructor() {
@@ -57,7 +59,27 @@ export class ServiceOrderForm {
       status: [''],
       location: ['', [Validators.required]],
       description: ['']
-    })
+    });
+  }
+
+  private getContractsByClient(client_id: number): void {
+    this.loadingContracts = true;
+    this._serviceOrderService.getContractsByClient(client_id)
+      .then((res: IContract[]) => {
+        this.contracts.set(res);
+      }).catch(err => {
+      this._toast.showToastError("Erro ao listar contratos!");
+    }).finally(() => this.loadingContracts = false);
+  }
+
+  public onChangeClient(): void {
+    if (this.formSO.controls['client_id'].value) {
+      this.getContractsByClient(this.formSO.controls['client_id'].value);
+      return;
+    }
+
+    this.contracts.set([]);
+    this.formSO.controls['contract_id'].setValue(null);
   }
 
   private createOs(): void {

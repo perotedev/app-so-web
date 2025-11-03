@@ -13,8 +13,11 @@
             filterBy="name"
             [filter]="true"
             class="w-full"
+            (onChange)="onChangeClient()"
+            (onClear)="onChangeClient()"
+            emptyMessage="Nenhum cliente encontrado"
           />
-          <label for="soClient">Cliente </label>
+          <label for="soClient">Cliente *</label>
         </p-float-label>
       </div>
 
@@ -23,6 +26,7 @@
           <p-select
             id="soContract"
             [options]="contracts()"
+            [loading]="loadingContracts"
             formControlName="contract_id"
             optionLabel="number"
             optionValue="id"
@@ -30,6 +34,7 @@
             filterBy="name"
             [filter]="true"
             class="w-full"
+            emptyMessage="Nenhum contrato encontrado"
           />
           <label for="soContract">Contrato </label>
         </p-float-label>

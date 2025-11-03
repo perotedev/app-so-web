@@ -12,7 +12,6 @@ import {IPaginationResponse} from '../../../shared/interfaces/IPaginationRespons
 import {ServiceOrderService} from '../service-order-service';
 import {ToastService} from '../../../shared/services/toast';
 import {IClient} from '../../../shared/interfaces/IClient';
-import {IContract} from '../../../shared/interfaces/IContract';
 
 @Component({
   selector: 'app-service-order-create',
@@ -30,7 +29,6 @@ export class ServiceOrderCreate implements OnInit{
   public createdSo: WritableSignal<IServiceOrder | undefined> = signal(undefined);
   public serviceTypes: WritableSignal<IServiceType[]> = signal([]);
   public clients: WritableSignal<IClient[]> = signal([]);
-  public contracts: WritableSignal<IContract[]> = signal([]);
 
   private getServiceTypes(): void {
     this._serviceOrderService.getServiceTypes(1, 100, "")
@@ -50,19 +48,9 @@ export class ServiceOrderCreate implements OnInit{
       });
   }
 
-  private getContracts(): void {
-    this._serviceOrderService.getContracts(1, 100, "")
-      .then((res: IPaginationResponse<IContract>) => {
-        this.contracts.set(res.items);
-      }).catch(err => {
-        this._toast.showToastError("Erro ao listar contratos!");
-      });
-  }
-
   public ngOnInit(): void {
     this.getServiceTypes();
     this.getClients();
-    this.getContracts();
   }
 
   public onCreate(serviceOrder: IServiceOrder): void {

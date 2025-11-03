@@ -86,7 +86,7 @@ export class ContentList<T> implements AfterContentInit {
   public selectionItemList: ISelectedItem<T>[] = [];
 
   public dataSignal: Signal<T[]> = computed(() => {
-    const data: T[] = this.dataList();
+    const data: T[] = [...this.dataList()];
     this.selectionItemList = data.map((item: T) => {
       return {
         checked: this.selectionList().includes(item),
