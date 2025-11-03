@@ -32,8 +32,8 @@ export class ServiceOrderService {
     return lastValueFrom(this._http.post<IServiceOrder>(`${environment.apiUrl}/api/v${version}/service-orders`, serviceOrder));
   }
 
-  public updateServiceOrder(id: number, serviceOrder: any): Promise<IServiceOrder> {
-    return lastValueFrom(this._http.put<IServiceOrder>(`${environment.apiUrl}/service-order/${id}`, serviceOrder));
+  public updateServiceOrder(id: number, serviceOrder: any, version: number = 1): Promise<IServiceOrder> {
+    return lastValueFrom(this._http.put<IServiceOrder>(`${environment.apiUrl}/api/v${version}/service-orders/${id}`, serviceOrder));
   }
 
   public deleteServiceOrder(id: number): Promise<any> {

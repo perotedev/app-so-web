@@ -1,4 +1,14 @@
-import {Component, inject, input, InputSignal, output, OutputEmitterRef, signal, WritableSignal} from '@angular/core';
+import {
+  Component,
+  effect,
+  inject,
+  input,
+  InputSignal,
+  output,
+  OutputEmitterRef,
+  signal,
+  WritableSignal
+} from '@angular/core';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {FloatLabel} from 'primeng/floatlabel';
 import {Select} from 'primeng/select';
@@ -53,13 +63,25 @@ export class ServiceOrderForm {
       contract_id: [null],
       start_date: [null, [Validators.required]],
       end_date: [null],
-      hour_start: [null],
-      hour_end: [null],
-      code: [''],
-      status: [''],
       location: ['', [Validators.required]],
       description: ['']
     });
+
+    effect(() => {
+      if (this.editSO()) this.patchForm(this.editSO()!);
+    });
+  }
+
+  private patchForm(so: IServiceOrder): void {
+    this.formSO.patchValue({
+      client_id: so.client_id,
+      contract_id: so.contract_id??null,
+      start_date: new Date(so.start_date! + "T00:00:00"),
+      location: so.location??null,
+      description: so.description??null,
+    });
+
+    if (so.contract_id) this.getContractsByClient(so.client_id!);
   }
 
   private getContractsByClient(client_id: number): void {
@@ -82,16 +104,20 @@ export class ServiceOrderForm {
     this.formSO.controls['contract_id'].setValue(null);
   }
 
-  private createOs(): void {
+  private saveOs(): void {
     this._loading.present();
     const value = this.formSO.value;
     value.start_date = new Date(value.start_date).toISOString().split('T')[0];
     value.status = ServiceOrderStatusEnum.PENDING;
-    this._serviceOrderService.createServiceOrder(value as IServiceOrder)
-      .then((res: IServiceOrder) => {
+    const request = this.editSO()?
+      this._serviceOrderService.updateServiceOrder(this.editSO()!.id!, value):
+      this._serviceOrderService.createServiceOrder(value);
+
+
+    request.then((res: IServiceOrder) => {
         this.onSave.emit(res);
       }).catch((err: any) => {
-        this._toast.showToastError("Erro ao criar ordem de serviço!");
+        this._toast.showToastError(`Erro ao ${this.editSO()?'atualizar':'criar'} ordem de serviço!`);
       }).finally(() => this._loading.dismiss());
   }
 
@@ -104,6 +130,6 @@ export class ServiceOrderForm {
       return
     }
 
-    this.createOs();
+    this.saveOs();
   }
 }

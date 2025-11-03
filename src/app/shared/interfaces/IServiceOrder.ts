@@ -8,8 +8,8 @@ export interface IServiceOrder extends IMetaData {
   id?: number;
   client_id?: number;
   contract_id?: number;
-  start_date?: Date;
-  end_date?: Date;
+  start_date?: Date | string;
+  end_date?: Date | string;
   code: string;
   status: ServiceOrderStatusEnum;
   location: string,
