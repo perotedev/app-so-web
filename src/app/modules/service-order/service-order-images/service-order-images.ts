@@ -1,14 +1,17 @@
-import {Component, inject, input, InputSignal, model, ModelSignal, signal, WritableSignal} from '@angular/core';
+import {Component, effect, inject, input, InputSignal, model, ModelSignal, signal, WritableSignal} from '@angular/core';
 import {FileTransferService} from '../../../shared/services/file-transfer';
 import {IServiceOrderItemDocument} from '../../../shared/interfaces/IServiceOrderItemDocument';
 import {takeUntil} from 'rxjs';
 import {ToastService} from '../../../shared/services/toast';
 import {ServiceOrderItemDocPosition} from '../../../shared/enums/ServiceOrderItemDocPosition';
 import {environment} from '../../../../environments/environment';
+import {GalleriaModule} from 'primeng/galleria';
 
 @Component({
   selector: 'app-service-order-images',
-  imports: [],
+  imports: [
+    GalleriaModule
+  ],
   templateUrl: './service-order-images.html',
   styleUrl: './service-order-images.scss'
 })
@@ -23,14 +26,14 @@ export class ServiceOrderImages {
   private readonly _toast: ToastService = inject(ToastService);
   private _filesToSend: File[] = [];
   public imgsUrls: WritableSignal<string[]> = signal([]);
-  public showGalery: boolean = false;
-  public indexGalery: number = 0;
-  public readonly apiUrl: string = environment.apiUrl;
+  public showGallery: boolean = false;
+  public indexGallery: number = 0;
+  public readonly docsUrl: string = environment.docsUrl;
 
   constructor() {
-    // effect(() => {
-    //   this.setImageUrlList(this.photoList());
-    // });
+    effect(() => {
+      this.setImageUrlList(this.photoList());
+    });
   }
 
   private processResponse(req: Promise<IServiceOrderItemDocument>): void {
@@ -70,14 +73,14 @@ export class ServiceOrderImages {
   private setImageUrlList(photoList: IServiceOrderItemDocument[]): void {
     const auxList: string[] = []
     photoList.forEach((image: IServiceOrderItemDocument) => {
-      auxList.push(image.document.file_path);
+      auxList.push(`${this.docsUrl}/${image.document.file_path}`);
     });
     this.imgsUrls.set(auxList);
   }
 
   public toggleGallery(index: number): void {
-    this.indexGalery = index;
-    this.showGalery = !this.showGalery;
+    this.indexGallery = index;
+    this.showGallery = !this.showGallery;
   }
 
   public onChangeInputFile(event: any): void {

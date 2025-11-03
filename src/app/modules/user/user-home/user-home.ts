@@ -87,8 +87,10 @@ export class UserHome {
 
   public onSaveUser(user: IUser): void {
     const existingUserIndex: number = this.users().findIndex((u: IUser) => u.id === user.id);
-    if (existingUserIndex >= 0) {
-      this.users()[existingUserIndex] = user;
+    if (existingUserIndex > -1) {
+      const auxList: IUser[] = [...this.users()];
+      auxList[existingUserIndex] = user;
+      this.users.set(auxList);
     } else {
       this.users.set([...this.users(), user]);
     }

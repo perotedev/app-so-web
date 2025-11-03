@@ -3,4 +3,5 @@ export const environment = {
   prefix: '[DEV]',
   appName: "AppOS",
   apiUrl: "http://localhost:8001",
+  docsUrl: "http://localhost:8001/files",
 }

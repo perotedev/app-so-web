@@ -24,7 +24,7 @@
     <img
       (click)="toggleGallery($index)"
       class="saved-image img-size fadein mr-3 mb-3 cursor-pointer"
-      src="{{apiUrl}}/files/{{item.document.file_path}}"
+      src="{{docsUrl}}/{{item.document.file_path}}"
       [alt]="item.document.filename"
     />
   }
@@ -47,22 +47,18 @@
 </div>
 
 
-<!--<p-galleria-->
-<!--  [value]="imgsUrls"-->
-<!--  [(visible)]="showGalery"-->
-<!--  [(activeIndex)]="indexGalery"-->
-<!--  [containerStyle]="{ 'max-width': '850px' }"-->
-<!--  [circular]="true"-->
-<!--  [fullScreen]="true"-->
-<!--  [showItemNavigators]="true"-->
-<!--  [showThumbnails]="false"-->
-<!--  class="galery-border"-->
-<!--&gt;-->
-<!--  <ng-template pTemplate="item" let-item>-->
-<!--    <img-->
-<!--      [src]="item"-->
-<!--      style="width: 100%;-->
-<!--        display: block;"-->
-<!--    />-->
-<!--  </ng-template>-->
-<!--</p-galleria>-->
+<p-galleria
+  [value]="imgsUrls()"
+  [(visible)]="showGallery"
+  [containerStyle]="{ 'max-width': '850px', 'max-height': '90%' }"
+  [numVisible]="3"
+  [circular]="true"
+  [fullScreen]="true"
+  [showItemNavigators]="true"
+  [showThumbnails]="false"
+  [(activeIndex)]="indexGallery"
+>
+  <ng-template #item let-item>
+    <img [src]="item" style="max-width: 100%; height: auto; max-height: 90%; display: block;"/>
+  </ng-template>
+</p-galleria>
