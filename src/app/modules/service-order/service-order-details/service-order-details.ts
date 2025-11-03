@@ -45,6 +45,16 @@ export class ServiceOrderDetails {
 
   public onSelectItem(index: number): void {
     this.currentSoItem = {...this.soItemList()[index]};
+
+    setTimeout(() => {
+      const container = document.querySelector('.content-outlet');
+      if (container) {
+        container.scrollTo({
+          top: 670,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
   }
 
   public onSaveItem(item: IServiceOrderItem): void {

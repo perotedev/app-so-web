@@ -82,7 +82,7 @@
     </div>
 
     <div class="col-12 md:col-6 xl:col-8 md:pb-0 flex flex-column" [class.column-right]="!isMobile()">
-      <div class="os-resume p-3 md:flex-1 pr-0 border-round-3xl">
+      <div id="osDetails_{{currentSoItem?.id??0}}" class="os-resume p-3 md:flex-1 pr-0 border-round-3xl">
         @if (currentSoItem) {
           <app-service-order-item-details
             [soItem]="currentSoItem"
@@ -90,7 +90,7 @@
           />
         } @else {
           <div class="flex not-item-selected mr-3 border-round-2xl align-items-center justify-content-center h-full">
-            <span class="opacity-80 py- pl-4">
+            <span class="opacity-80 py-5 pl-4">
               Selecione um serviço para visualizar os detalhes
             </span>
           </div>
