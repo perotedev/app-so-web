@@ -85,7 +85,8 @@
       <p-button
         icon="pi pi-ban"
         label="Cancelar"
-        onClick="onCancel.emit()"
+        (onClick)="onCancel.emit()"
+        severity="danger"
       />
     }
 
@@ -96,11 +97,11 @@
       severity="warn"
     />
 
-    <p-button
-      icon="pi pi-trash"
-      label="Excluir"
-      severity="danger"
-      class="mr-3"
-    />
+<!--    <p-button-->
+<!--      icon="pi pi-trash"-->
+<!--      label="Excluir"-->
+<!--      severity="danger"-->
+<!--      class="mr-3"-->
+<!--    />-->
   </div>
 </div>
