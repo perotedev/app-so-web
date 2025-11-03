@@ -71,7 +71,7 @@
       <p-button
         icon="pi pi-play"
         label="Iniciar"
-        [rounded]="true"
+        (onClick)="onStart.emit()"
       />
     }
 
@@ -79,11 +79,13 @@
       <p-button
         icon="pi pi-play"
         label="Finalizar"
+        (onClick)="onFinish.emit()"
       />
 
       <p-button
         icon="pi pi-ban"
         label="Cancelar"
+        onClick="onCancel.emit()"
       />
     }
 

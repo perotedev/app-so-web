@@ -86,7 +86,10 @@
         @if (currentSoItem) {
           <app-service-order-item-details
             [soItem]="currentSoItem"
-             (onEditItem)="toggleDialogItem()"
+            (onEditItem)="toggleDialogItem()"
+            (onStart)="onUpdateStatus(serviceOrderStatusEnum.IN_PROGRESS)"
+            (onFinish)="onUpdateStatus(serviceOrderStatusEnum.FINISHED)"
+            (onCancel)="onUpdateStatus(serviceOrderStatusEnum.CANCELED)"
           />
         } @else {
           <div class="flex not-item-selected mr-3 border-round-2xl align-items-center justify-content-center h-full">

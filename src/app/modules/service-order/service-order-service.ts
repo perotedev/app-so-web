@@ -9,6 +9,7 @@ import {IServiceOrderItem} from '../../shared/interfaces/IServiceOrderItem';
 import {IServiceType} from '../../shared/interfaces/IServiceType';
 import {IClient} from '../../shared/interfaces/IClient';
 import {IContract} from '../../shared/interfaces/IContract';
+import {ServiceOrderStatusEnum} from '../../shared/enums/ServiceOrderStatusEnum';
 
 @Injectable({
   providedIn: 'root'
@@ -76,5 +77,13 @@ export class ServiceOrderService {
 
   public updateSoItem(id: number, soItem: any, version: number = 1): Promise<IServiceOrderItem> {
     return lastValueFrom(this._http.put<IServiceOrderItem>(`${environment.apiUrl}/api/v${version}/service-orders/item/${id}`, soItem));
+  }
+
+  public updateSoItemStatus(soItemId: number, status: ServiceOrderStatusEnum, version: number = 1): Promise<IServiceOrderItem> {
+    const data = { status: status, service_order_item_id: soItemId };
+    return lastValueFrom(this._http.put<IServiceOrderItem>(
+      `${environment.apiUrl}/api/v${version}/service-orders/item_status/${soItemId}/status`,
+      data
+    ));
   }
 }

@@ -10,6 +10,10 @@ import {Dialog} from 'primeng/dialog';
 import {ServiceOrderForm} from '../service-order-form/service-order-form';
 import {ServiceOrderItemForm} from '../service-order-item-form/service-order-item-form';
 import {StatusPipe} from '../../../shared/pipes/status-pipe';
+import {ServiceOrderStatusEnum} from '../../../shared/enums/ServiceOrderStatusEnum';
+import {Loading} from '../../../shared/services/loading';
+import {ServiceOrderService} from '../service-order-service';
+import {ToastService} from '../../../shared/services/toast';
 
 @Component({
   selector: 'app-service-order-details',
@@ -26,14 +30,18 @@ import {StatusPipe} from '../../../shared/pipes/status-pipe';
   styleUrl: './service-order-details.scss'
 })
 export class ServiceOrderDetails {
-  public readonly isMobile = inject(IS_MOBILE);
   public serviceTypes: InputSignal<IServiceType[]> = input.required();
   public serviceOrder: InputSignal<IServiceOrder | undefined> = input<IServiceOrder | undefined>(undefined);
 
+  private readonly _loading: Loading = inject(Loading);
+  private readonly _soService: ServiceOrderService = inject(ServiceOrderService);
+  private readonly _toast: ToastService = inject(ToastService);
+  public readonly isMobile = inject(IS_MOBILE);
   public readonly soItemList: WritableSignal<IServiceOrderItem[]> = signal([]);
   public showDialog: boolean = false;
   public showDialogItem: boolean = false;
   public currentSoItem?: IServiceOrderItem;
+  public readonly serviceOrderStatusEnum = ServiceOrderStatusEnum;
 
   constructor() {
     effect(() => {
@@ -41,6 +49,17 @@ export class ServiceOrderDetails {
         this.soItemList.set(this.serviceOrder()!.items);
       }
     });
+  }
+
+  private updateSoItemStatus(soItemid: number, status: ServiceOrderStatusEnum): void {
+    this._loading.present();
+    this._soService.updateSoItemStatus(soItemid, status)
+      .then((res: IServiceOrderItem)=> {
+        this.onSaveItem(res, false);
+        this._toast.showToastError("Status atualizado com sucesso");
+      }).catch((err: any) => {
+        this._toast.showToastError("Erro ao atualizar status");
+      }).finally(() => this._loading.dismiss());
   }
 
   public onSelectItem(index: number): void {
@@ -57,8 +76,8 @@ export class ServiceOrderDetails {
     }, 100);
   }
 
-  public onSaveItem(item: IServiceOrderItem): void {
-    this.toggleDialogItem();
+  public onSaveItem(item: IServiceOrderItem, toggle: boolean = true): void {
+    if (toggle) this.toggleDialogItem();
 
     const existingItemIndex: number = this.soItemList().findIndex((i: IServiceOrderItem) => i.id === item.id);
     if (existingItemIndex >= 0) {
@@ -76,5 +95,9 @@ export class ServiceOrderDetails {
 
   public toggleDialogItem(): void {
     this.showDialogItem = !this.showDialogItem;
+  }
+
+  public onUpdateStatus(status: ServiceOrderStatusEnum): void {
+    if (this.currentSoItem) this.updateSoItemStatus(this.currentSoItem.id!, status);
   }
 }
