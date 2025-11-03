@@ -54,6 +54,10 @@ export class ServiceOrderDetails {
     if (existingItemIndex >= 0) {
       this.soItemList()[existingItemIndex] = item;
     }
+
+    if (this.currentSoItem?.id === item.id) {
+      this.currentSoItem = item;
+    }
   }
 
   public toggleDialog(): void {
