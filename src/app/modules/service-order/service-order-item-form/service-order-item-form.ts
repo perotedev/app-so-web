@@ -56,7 +56,7 @@ export class ServiceOrderItemForm implements OnInit {
     value.status = this.editItem()?this.editItem()!.status:ServiceOrderStatusEnum.PENDING;
 
     const req = this.editItem()
-      ?this._soService.updateSoItem(this.soId(), value)
+      ?this._soService.updateSoItem(this.editItem()!.id!, value)
       :this._soService.createSoItem(value);
 
     req.then((res: IServiceOrderItem) => {
