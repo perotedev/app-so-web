@@ -6,6 +6,7 @@ import {ToastService} from '../../../shared/services/toast';
 import {ServiceOrderItemDocPosition} from '../../../shared/enums/ServiceOrderItemDocPosition';
 import {environment} from '../../../../environments/environment';
 import {GalleriaModule} from 'primeng/galleria';
+import {IFileTransfer} from '../../../shared/interfaces/IFileTransfer';
 
 @Component({
   selector: 'app-service-order-images',
@@ -38,7 +39,9 @@ export class ServiceOrderImages {
 
   private processResponse(req: Promise<IServiceOrderItemDocument>): void {
     req.then((res: IServiceOrderItemDocument) => {
-      this.photoList().push(res);
+      const auxList = [...this.photoList()];
+      auxList.push(res);
+      this.photoList.set(auxList);
     }).catch(() => {
       this._toast.showToastError("Erro ao adicionar imagem!");
     });
@@ -49,7 +52,7 @@ export class ServiceOrderImages {
     const auxFiles = [...this._filesToSend];
     this._filesToSend = [];
     for (let file of auxFiles) {
-      const transfer = this._fileTransfer.uploadFile(this.getFormData(file), endpoint);
+      const transfer: IFileTransfer = this._fileTransfer.uploadFile(this.getFormData(file), endpoint);
       this.processResponse(transfer.request);
 
       transfer.retryEvent.pipe(takeUntil(transfer.destroy$)).subscribe({
