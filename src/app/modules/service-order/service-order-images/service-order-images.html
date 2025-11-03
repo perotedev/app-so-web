@@ -23,7 +23,7 @@
   @for(item of photoList(); track $index) {
     <img
       (click)="toggleGallery($index)"
-      class="saved-image img-size fadein mr-3 mb-3 cursor-pointer"
+      class="saved-image img-size fadein mr-3 mb-3 cursor-pointer shadow-1"
       src="{{docsUrl}}/{{item.document.file_path}}"
       [alt]="item.document.filename"
     />

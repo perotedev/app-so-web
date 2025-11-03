@@ -64,6 +64,34 @@ export class ServiceOrderDetails {
       }).finally(() => this._loading.dismiss());
   }
 
+  private updateSoStatus(): void {
+    const statuses = this.soItemList()
+      .filter(item => item.status !== null)
+      .map(item => item.status);
+
+    if (statuses.length === 0) {
+      this.serviceOrder()!.status = ServiceOrderStatusEnum.PENDING;
+      return;
+    }
+
+    if (statuses.every(s => s === ServiceOrderStatusEnum.PENDING)) {
+      this.serviceOrder()!.status =  ServiceOrderStatusEnum.PENDING;
+      return;
+    }
+
+    if (statuses.some(s => s === ServiceOrderStatusEnum.IN_PROGRESS)) {
+      this.serviceOrder()!.status =  ServiceOrderStatusEnum.IN_PROGRESS;
+      return;
+    }
+
+    if (statuses.every(s => s === ServiceOrderStatusEnum.FINISHED || s === ServiceOrderStatusEnum.CANCELED)) {
+      this.serviceOrder()!.status = ServiceOrderStatusEnum.FINISHED;
+      return;
+    }
+
+    this.serviceOrder()!.status =  ServiceOrderStatusEnum.IN_PROGRESS;
+  }
+
   public onSelectItem(index: number): void {
     this.currentSoItem = {...this.soItemList()[index]};
 
@@ -89,7 +117,10 @@ export class ServiceOrderDetails {
     if (this.currentSoItem?.id === item.id) {
       this.currentSoItem = item;
     }
+
+    this.updateSoStatus();
   }
+
 
   public toggleDialog(): void {
     this.showDialog = !this.showDialog;
