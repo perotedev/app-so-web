@@ -21,9 +21,20 @@
 }
 
 .add-image {
-  background-color: var(--p-surface-200);
+  background: var(--p-surface-200);
   padding: 7px;
   user-select: none;
+}
+
+.empty-default {
+  height: 110px;
+  width: 97%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  border-radius: 12px;
+  background: var(--p-message-secondary-background);
 }
 
 ::ng-deep {
@@ -53,16 +64,16 @@
 }
 
 .inner-add-image:hover {
-  background-color: var(--p-surface-300);
+  background: var(--p-surface-300);
 }
 
 :host-context(.dark-mode) {
   .add-image {
-    background-color: var(--p-surface-800);
+    background: var(--p-surface-800);
   }
 
   .inner-add-image:hover {
-    background-color: var(--p-surface-700);
+    background: var(--p-surface-700);
   }
 
 }

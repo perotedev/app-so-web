@@ -17,6 +17,7 @@ export class ServiceOrderImages {
   public photoList: ModelSignal<IServiceOrderItemDocument[]> = model<IServiceOrderItemDocument[]>([]);
   public inputFileId: InputSignal<string> = input('inputFileImages');
   public position: InputSignal<ServiceOrderItemDocPosition> = input<ServiceOrderItemDocPosition>(ServiceOrderItemDocPosition.BEFORE);
+  public canAdd: InputSignal<boolean> = input(false);
 
   private readonly _fileTransfer: FileTransferService = inject(FileTransferService);
   private readonly _toast: ToastService = inject(ToastService);

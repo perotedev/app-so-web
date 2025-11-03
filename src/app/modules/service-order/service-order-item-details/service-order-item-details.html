@@ -43,7 +43,7 @@
   </div>
 
   <div class="flex md:gap-3 flex-column md:flex-row">
-    <div class="mt-4 flex flex-column">
+    <div class="mt-4 flex-1 flex flex-column">
       <span class="font-bold">Imagens Antes</span>
 
       <div class="mt-3">
@@ -52,11 +52,12 @@
           [position]="serviceOrderItemDocPosition.BEFORE"
           [photoList]="beforeImages()"
           inputFileId="inputFileId_1"
+          [canAdd]="soItem().status === 'PENDING' || soItem().status === 'IN_PROGRESS'"
         />
       </div>
     </div>
 
-    <div class="mt-4 flex flex-column">
+    <div class="mt-4 flex-1 flex flex-column">
       <span class="font-bold">Imagens Depois</span>
 
       <div class="mt-3">
@@ -65,6 +66,7 @@
           [position]="serviceOrderItemDocPosition.AFTER"
           [photoList]="afterImages()"
           inputFileId="inputFileId_2"
+          [canAdd]="soItem().status === 'PENDING' || soItem().status === 'IN_PROGRESS'"
         />
       </div>
     </div>

@@ -1,6 +1,6 @@
 <div class="flex flex-wrap w-full">
   <input #inputFileImage type="file" class="input-file-imgs" [id]="inputFileId()" title=" " [max]="3" [multiple]="true" accept="image/*" (change)="onChangeInputFile($event)" />
-  @if (photoList().length < 3) {
+  @if (photoList().length < 3 && canAdd()) {
     <div class="img-size border-round-xl shadow-1 add-image flex align-items-center justify-content-center mr-3 mb-3">
       <div (click)="inputFileImage.click()" class="inner-add-image flex flex-column align-items-center justify-content-center cursor-pointer">
         <div class="text-center m-0">
@@ -14,6 +14,12 @@
     </div>
   }
 
+  @if (photoList().length === 0 && !canAdd()) {
+    <div class="empty-default">
+      <span>Nenhuma imagem adicionada</span>
+    </div>
+  }
+
   @for(item of photoList(); track $index) {
     <img
       (click)="toggleGallery($index)"
@@ -23,7 +29,7 @@
     />
   }
 
-  @if (photoList().length < 3) {
+  @if (photoList().length < 3 && canAdd()) {
     @for (item of getFakeList(); track item) {
       <div class=" img-size border-round-xl shadow-1 add-image flex align-items-center justify-content-center mr-3 mb-3">
         <div (click)="inputFileImage.click()" class="inner-add-image flex flex-column align-items-center justify-content-center cursor-pointer">
