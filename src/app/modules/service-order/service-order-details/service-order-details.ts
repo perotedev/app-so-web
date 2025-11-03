@@ -14,6 +14,7 @@ import {ServiceOrderStatusEnum} from '../../../shared/enums/ServiceOrderStatusEn
 import {Loading} from '../../../shared/services/loading';
 import {ServiceOrderService} from '../service-order-service';
 import {ToastService} from '../../../shared/services/toast';
+import {StatusSeverityPipe} from '../../../shared/pipes/status-severity-pipe';
 
 @Component({
   selector: 'app-service-order-details',
@@ -24,7 +25,8 @@ import {ToastService} from '../../../shared/services/toast';
     Dialog,
     ServiceOrderForm,
     ServiceOrderItemForm,
-    StatusPipe
+    StatusPipe,
+    StatusSeverityPipe
   ],
   templateUrl: './service-order-details.html',
   styleUrl: './service-order-details.scss'

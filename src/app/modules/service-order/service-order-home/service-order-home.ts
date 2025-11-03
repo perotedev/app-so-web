@@ -12,6 +12,7 @@ import {IServiceOrder} from '../../../shared/interfaces/IServiceOrder';
 import {ToastService} from '../../../shared/services/toast';
 import {Loading} from '../../../shared/services/loading';
 import {StatusPipe} from '../../../shared/pipes/status-pipe';
+import {StatusSeverityPipe} from '../../../shared/pipes/status-severity-pipe';
 
 @Component({
   selector: 'app-service-order-home',
@@ -22,7 +23,8 @@ import {StatusPipe} from '../../../shared/pipes/status-pipe';
     InputSearch,
     NgStyle,
     DatePipe,
-    StatusPipe
+    StatusPipe,
+    StatusSeverityPipe
   ],
   templateUrl: './service-order-home.html',
   styleUrl: './service-order-home.scss'

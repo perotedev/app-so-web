@@ -29,9 +29,9 @@
     [rowsPerPageOptions]="[10, 20, 30]"
     (onPageChange)="onPageChange($event)"
   >
-    <span cl-header [autoCol]="false" style="width: 70px;">ID</span>
+    <span cl-header [autoCol]="false" style="width: 40px;">ID</span>
     <ng-template clTCell [mobileHiden]="true" let-item>
-      <span cl-cell [autoCol]="false" style="width: 70px;">{{item.id}}</span>
+      <span cl-cell [autoCol]="false" style="width: 40px;">{{item.id}}</span>
     </ng-template>
 
     <span cl-header>Descrição</span>
@@ -52,7 +52,13 @@
 
     <span cl-header [autoCol]="false" class="col-2">Status</span>
     <ng-template clTCell let-item>
-      <span cl-cell [autoCol]="false" class="col-2">{{item.status | statusPipe}}</span>
+      <span
+        cl-cell
+        [autoCol]="false"
+        class="col-2 font-bold status-detail {{item.status | statusSeverityPipe}}"
+      >
+        {{item.status | statusPipe}}
+      </span>
     </ng-template>
 
     <span cl-header [autoCol]="false" style="width: 72px;" class="text-right"></span>

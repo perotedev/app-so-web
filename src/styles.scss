@@ -178,6 +178,23 @@ input, textarea, .p-select {
   }
 }
 
+.status-detail.info {
+  color: var(--p-button-info-background);
+}
+
+.status-detail.warn {
+  color: var(--p-button-warn-background);
+}
+
+.status-detail.primary {
+  color: var(--p-primary-color);
+}
+
+.status-detail.danger {
+  color: var(--p-button-danger-background);
+}
+
+
 .dark-mode  {
   .p-breadcrumb {
     ol {
