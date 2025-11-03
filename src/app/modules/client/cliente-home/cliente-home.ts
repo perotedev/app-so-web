@@ -98,7 +98,9 @@ export class ClienteHome {
   public onSaveClient(client: IClient): void {
     const existingClientIndex: number = this.clients().findIndex((c: IClient) => c.id === client.id);
     if (existingClientIndex >= 0) {
-      this.clients()[existingClientIndex] = client;
+      const auxList: IClient[] = [...this.clients()];
+      auxList[existingClientIndex] = client;
+      this.clients.set(auxList);
     } else {
       this.clients.set([...this.clients(), client]);
     }
