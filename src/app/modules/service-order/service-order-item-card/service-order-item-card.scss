@@ -20,7 +20,22 @@
 
 .so-item-card.active {
   background: var(--p-surface-200);
-  border: 1px solid var(--p-primary-color);
+}
+
+.so-item-card.active.primary {
+  box-shadow: inset 0 0 0 1px var(--p-primary-color) !important;
+}
+
+.so-item-card.active.info {
+  box-shadow: inset 0 0 0 1px var(--p-button-info-background) !important;
+}
+
+.so-item-card.active.danger {
+  box-shadow: inset 0 0 0 1px var(--p-button-danger-background) !important;
+}
+
+.so-item-card.active.warn {
+  box-shadow: inset 0 0 0 1px var(--p-button-warn-background) !important;
 }
 
 .color-primary {
@@ -36,6 +51,43 @@
   align-items: center;
   justify-content: center;
   border-radius: 50%;
+}
+
+.border-status {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 18px;
+}
+
+.border-status.info {
+  background: var(--p-button-info-background);
+}
+
+.border-status.warn {
+  background: var(--p-button-warn-background);
+}
+
+.border-status.primary {
+  background: var(--p-primary-color);
+}
+
+.border-status.danger {
+  background: var(--p-button-danger-background);
+}
+
+.status-text {
+  position: absolute;
+  left: 4px;
+  top: calc(50% - 40px);;
+  font-size: 8px;
+  color: var(--color-light);
+  writing-mode: vertical-lr;
+  text-align: center;
+  height: 80px;
+  font-weight: bold;
+  transform: rotate(180deg);
 }
 
 :host-context(.dark-mode) {

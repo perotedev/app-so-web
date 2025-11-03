@@ -56,7 +56,7 @@ export class ServiceOrderDetails {
     this._soService.updateSoItemStatus(soItemid, status)
       .then((res: IServiceOrderItem)=> {
         this.onSaveItem(res, false);
-        this._toast.showToastError("Status atualizado com sucesso");
+        this._toast.showToastSuccess("Status atualizado com sucesso");
       }).catch((err: any) => {
         this._toast.showToastError("Erro ao atualizar status");
       }).finally(() => this._loading.dismiss());

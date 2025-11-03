@@ -2,11 +2,15 @@ import {Component, inject, input, InputSignal, output, OutputEmitterRef} from '@
 import {Button} from 'primeng/button';
 import {IS_MOBILE} from '../../../shared/services/is-mobile';
 import {IServiceOrderItem} from '../../../shared/interfaces/IServiceOrderItem';
+import {StatusSeverityPipe} from '../../../shared/pipes/status-severity-pipe';
+import {StatusPipe} from '../../../shared/pipes/status-pipe';
 
 @Component({
   selector: 'app-service-order-item-card',
   imports: [
-    Button
+    Button,
+    StatusSeverityPipe,
+    StatusPipe
   ],
   templateUrl: './service-order-item-card.html',
   styleUrl: './service-order-item-card.scss'

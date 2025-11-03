@@ -1,10 +1,13 @@
 <div
-  class="flex-1 so-item-card w-full border-round-3xl py-3 shadow-1"
+  class="flex-1 so-item-card w-full border-round-3xl py-3 pl-3 shadow-1 relative {{soItem().status | statusSeverityPipe}}"
   [class.reduced]="reduced()"
   [class.only-view]="onlyView()"
   [class.active]="active()"
   (click)="onClickItem.emit()"
 >
+  <div class="border-status border-round-left-3xl {{soItem().status | statusSeverityPipe}}">
+    <div class="status-text">{{soItem().status | statusPipe}}</div>
+  </div>
   <div class="flex align-items-center pl-3">
     <div class="number-head">
       <span class="font-bold">{{index()}}</span>

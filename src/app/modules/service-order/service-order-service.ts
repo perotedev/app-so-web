@@ -82,7 +82,7 @@ export class ServiceOrderService {
   public updateSoItemStatus(soItemId: number, status: ServiceOrderStatusEnum, version: number = 1): Promise<IServiceOrderItem> {
     const data = { status: status, service_order_item_id: soItemId };
     return lastValueFrom(this._http.put<IServiceOrderItem>(
-      `${environment.apiUrl}/api/v${version}/service-orders/item_status/${soItemId}/status`,
+      `${environment.apiUrl}/api/v${version}/service-orders/item/${soItemId}/status`,
       data
     ));
   }
