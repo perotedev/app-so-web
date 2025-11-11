@@ -29,9 +29,9 @@
     [rowsPerPageOptions]="[10, 20, 30]"
     (onPageChange)="onPageChange($event)"
   >
-    <span cl-header [autoCol]="false" style="width: 70px;">ID</span>
+    <span cl-header [autoCol]="false" style="width: 50px;">ID</span>
     <ng-template clTCell [mobileHiden]="true" let-item>
-      <span cl-cell [autoCol]="false" style="width: 70px">{{item.id}}</span>
+      <span cl-cell [autoCol]="false" style="width: 50px">{{item.id}}</span>
     </ng-template>
 
     <span cl-header [autoCol]="false" style="width: 150px;">Número</span>
